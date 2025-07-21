@@ -39,6 +39,8 @@ services:
     ports:
       - 3333:3333
     environment:
+      - PORT=3333
+      - H0ST='0.0.0.0'
       - DATABASE_URL=postgresql://docker:docker@let-me-ask-db:5432/letMeAsk
       - GEMINI_API_KEY=${GEMINI_API_KEY}
       - REDIS_URL=redis://let-me-ask-redis:6379
