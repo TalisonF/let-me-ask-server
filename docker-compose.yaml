@@ -53,31 +53,16 @@ services:
     restart: always
     ports:
       - "80:80"  # HTTP
-      - "443:443" # HTTPS
+#      - "443:443" # HTTPS
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./nginx/conf.d:/etc/nginx/conf.d:ro
-      - certbot-etc:/etc/letsencrypt # Para certificados SSL do Let's Encrypt
-      - certbot-var:/var/lib/letsencrypt # Para certificados SSL do Let's Encrypt
-      - webroot-data:/var/www/certbot # NOVO: Volume para os desafios do Certbot
+#      - certbot-etc:/etc/letsencrypt # Para certificados SSL do Let's Encrypt
+#      - certbot-var:/var/lib/letsencrypt # Para certificados SSL do Let's Encrypt
+#      - webroot-data:/var/www/certbot # NOVO: Volume para os desafios do Certbot
     depends_on:
       - let-me-ask-service
       - let-me-ask-webapp
-    networks:
-      - let-me-ask-network
-  # Serviço Certbot para Let's Encrypt (opcional, mas altamente recomendado para HTTPS)
-  certbot:
-    image: certbot/certbot
-    restart: unless-stopped
-    volumes:
-      - certbot-etc:/etc/letsencrypt
-      - certbot-var:/var/lib/letsencrypt
-      - ./nginx/conf.d:/etc/nginx/conf.d:rw # Para que o certbot possa adicionar/modificar configs de desafio
-      - webroot-data:/var/www/certbot # NOVO: Volume para os desafios do Certbot
-    # ATUALIZADO: Inclui ambos os subdomínios
-    command: certonly --webroot -w /var/www/certbot --force-renewal --email talison737@gmail.com -d let-me-ask.faraujo.com -d api-let-me-ask.faraujo.com --rsa-key-size 4096 --agree-tos --no-eff-email
-    # Remova a linha "command" após a primeira execução bem-sucedida para evitar renovações desnecessárias
-    # ou configure para rodar como um cron job no VPS
     networks:
       - let-me-ask-network
 
@@ -88,6 +73,3 @@ networks:
 volumes:
   redis_data:
   let-me-ask-db-data:
-  certbot-etc:
-  certbot-var:
-  webroot-data: # NOVO: Definição do novo volume
