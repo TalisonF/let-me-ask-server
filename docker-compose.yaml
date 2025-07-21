@@ -75,7 +75,7 @@ services:
       - ./nginx/conf.d:/etc/nginx/conf.d:rw # Para que o certbot possa adicionar/modificar configs de desafio
       - webroot-data:/var/www/certbot # NOVO: Volume para os desafios do Certbot
     # ATUALIZADO: Inclui ambos os subdomínios
-    command: certonly --webroot -w /var/www/certbot --force-renewal --email talison737@gmail.com -d let-me-ask.faraujo.com -d api.seu_dominio.com --rsa-key-size 4096 --agree-tos --no-eff-email
+    command: certonly --webroot -w /var/www/certbot --force-renewal --email talison737@gmail.com -d let-me-ask.faraujo.com -d api-let-me-ask.faraujo.com --rsa-key-size 4096 --agree-tos --no-eff-email
     # Remova a linha "command" após a primeira execução bem-sucedida para evitar renovações desnecessárias
     # ou configure para rodar como um cron job no VPS
     networks:
