@@ -22,6 +22,11 @@ services:
     volumes:
       - ./docker/setup.sql:/docker-entrypoint-initdb.d/setup.sql
       - 'let-me-ask-db-data:/var/lib/postgresql/data'
+    healthcheck: # Adicione isto para um healthcheck robusto
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     networks:
       - let-me-ask-network
 
@@ -34,8 +39,10 @@ services:
       - GEMINI_API_KEY=${GEMINI_API_KEY}
       - REDIS_URL=redis://let-me-ask-redis:6379
     depends_on:
-      - let-me-ask-db
-      - let-me-ask-redis
+      -let-me-ask-db:
+        condition: service_healthy
+      -let-me-ask-redis:
+        condition: service_healthy
     networks:
     - let-me-ask-network
 
