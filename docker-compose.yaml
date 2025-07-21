@@ -32,7 +32,7 @@ services:
     environment:
       - DATABASE_URL=postgresql://docker:docker@let-me-ask-db:5432/letMeAsk
       - GEMINI_API_KEY=${GEMINI_API_KEY}
-      - REDIS_URL:redis://let-me-ask-redis:6379
+      - REDIS_URL=redis://let-me-ask-redis:6379
     depends_on:
       - let-me-ask-db
       - let-me-ask-redis
