@@ -1,0 +1,90 @@
+version: '3.8'
+
+services:
+  let-me-ask-redis:
+    container_name: let-me-ask-redis
+    image: redis:7.4-alpine 
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - let-me-ask-network
+  let-me-ask-db:
+    container_name: let-me-ask-db
+    image: pgvector/pgvector:pg17
+    environment:
+      POSTGRES_USER: docker
+      POSTGRES_PASSWORD: docker
+      POSTGRES_DB: letMeAsk
+    ports:
+      - 5432:5432
+    volumes:
+      - ./docker/setup.sql:/docker-entrypoint-initdb.d/setup.sql
+      - 'let-me-ask-db-data:/var/lib/postgresql/data'
+    networks:
+      - let-me-ask-network
+
+  let-me-ask-service:
+    restart: always
+    container_name: let-me-ask-service
+    image: talison737/nlw-agents-server:latest
+    environment:
+      - DATABASE_URL=postgresql://docker:docker@let-me-ask-db:5432/letMeAsk
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - REDIS_URL:"redis://let-me-ask-redis:6379"
+    depends_on:
+      - let-me-ask-pg
+      - let-me-ask-redis
+    networks:
+    - let-me-ask-network
+
+  # Serviço da aplicação Vite (frontend)
+  let-me-ask-webapp:
+    container_name: let-me-ask-webapp
+    image: talison737/nlw-agents-webapp:latest
+    restart: always
+    networks:
+    - let-me-ask-network
+
+  # Serviço NGINX como proxy reverso
+  nginx:
+    image: nginx:latest
+    restart: always
+    ports:
+      - "80:80"  # HTTP
+      - "443:443" # HTTPS
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+      - certbot-etc:/etc/letsencrypt # Para certificados SSL do Let's Encrypt
+      - certbot-var:/var/lib/letsencrypt # Para certificados SSL do Let's Encrypt
+    depends_on:
+      - let-me-ask-service
+      - let-me-ask-webapp
+    networks:
+      - let-me-ask-network
+  # Serviço Certbot para Let's Encrypt (opcional, mas altamente recomendado para HTTPS)
+  certbot:
+    image: certbot/certbot
+    restart: unless-stopped
+    volumes:
+      - certbot-etc:/etc/letsencrypt
+      - certbot-var:/var/lib/letsencrypt
+      - ./nginx/conf.d:/etc/nginx/conf.d:rw # Para que o certbot possa adicionar/modificar configs de desafio
+    # ATUALIZADO: Inclui ambos os subdomínios
+    command: certonly --webroot -w /var/www/certbot --force-renewal --email seu_email@example.com -d let-me-ask.faraujo.com -d api-let-me-ask.faraujo.com --rsa-key-size 4096 --agree-tos --no-eff-email
+    # Remova a linha "command" após a primeira execução bem-sucedida para evitar renovações desnecessárias
+    # ou configure para rodar como um cron job no VPS
+    networks:
+      - let-me-ask-network
+
+networks:
+  let-me-ask-network:
+    driver: bridge
+
+volumes:
+  redis_data:
+  let-me-ask-db-data:
+  certbot-etc:
+  certbot-var:
