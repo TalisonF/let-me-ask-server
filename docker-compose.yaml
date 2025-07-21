@@ -1,6 +1,7 @@
 version: '3.8'
 
 services:
+
   let-me-ask-redis:
     container_name: let-me-ask-redis
     image: redis:7.4-alpine 
@@ -10,6 +11,7 @@ services:
       - redis_data:/data
     networks:
       - let-me-ask-network
+
   let-me-ask-db:
     container_name: let-me-ask-db
     image: pgvector/pgvector:pg17
@@ -39,10 +41,10 @@ services:
       - GEMINI_API_KEY=${GEMINI_API_KEY}
       - REDIS_URL=redis://let-me-ask-redis:6379
     depends_on:
-      -let-me-ask-db:
+      let-me-ask-db:
         condition: service_healthy
-      -let-me-ask-redis:
-        condition: service_healthy
+      let-me-ask-redis:
+        condition: service_started
     networks:
     - let-me-ask-network
 
