@@ -55,7 +55,7 @@ services:
   # Serviço da aplicação Vite (frontend)
   let-me-ask-webapp:
     container_name: let-me-ask-webapp
-    image: talison737/nlw-agents-webapp:latest
+    image: talison737/nlw-agents-webapp:7d0bc42
     restart: always
     networks:
     - let-me-ask-network
