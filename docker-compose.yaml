@@ -36,6 +36,8 @@ services:
     restart: always
     container_name: let-me-ask-service
     image: talison737/nlw-agents-server:latest
+    ports:
+      - 3333:3333
     environment:
       - DATABASE_URL=postgresql://docker:docker@let-me-ask-db:5432/letMeAsk
       - GEMINI_API_KEY=${GEMINI_API_KEY}
