@@ -33,7 +33,6 @@ services:
       - let-me-ask-network
 
   let-me-ask-service:
-    restart: always
     container_name: let-me-ask-service
     image: talison737/nlw-agents-server:6f1f427
     ports:
@@ -56,14 +55,12 @@ services:
   let-me-ask-webapp:
     container_name: let-me-ask-webapp
     image: talison737/nlw-agents-webapp:7d0bc42
-    restart: always
     networks:
     - let-me-ask-network
 
   # Serviço NGINX como proxy reverso
   nginx:
     image: nginx:latest
-    restart: always
     ports:
       - "80:80"  # HTTP
 #      - "443:443" # HTTPS
