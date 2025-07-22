@@ -73,6 +73,7 @@ services:
     depends_on:
       - let-me-ask-service
       - let-me-ask-webapp
+      - certbot
     networks:
       - let-me-ask-network
 
