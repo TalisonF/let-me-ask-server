@@ -63,13 +63,35 @@ services:
     image: nginx:latest
     ports:
       - "80:80"  # HTTP
-#      - "443:443" # HTTPS
+      - "443:443" # HTTPS
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./nginx/conf.d:/etc/nginx/conf.d:ro
+      - certbot-etc:/etc/letsencrypt # Onde o Certbot guarda os certificados
+      - certbot-var:/var/lib/letsencrypt # Onde o Certbot guarda dados internos
+      - webroot-data:/var/www/certbot # Para os arquivos de desafio do Certbot
     depends_on:
       - let-me-ask-service
       - let-me-ask-webapp
+    networks:
+      - let-me-ask-network
+
+
+  certbot:
+    image: certbot/certbot
+    restart: unless-stopped # Continua tentando ou espera por um evento
+    volumes:
+      - certbot-etc:/etc/letsencrypt
+      - certbot-var:/var/lib/letsencrypt
+      - webroot-data:/var/www/certbot
+    # O comando é executado UMA VEZ para obter os certificados iniciais
+    command: >
+      certonly --webroot -w /var/www/certbot
+      --email talison737@gmail.com --agree-tos --no-eff-email
+      -d let-me-ask.faraujo.com -d api-let-me-ask.faraujo.com
+      --rsa-key-size 4096
+      --force-renewal # Use --force-renewal para testar ou --staging para não ter limites
+      # --staging # Descomente para testar sem limites (usa certificados de teste)
     networks:
       - let-me-ask-network
 
@@ -78,5 +100,8 @@ networks:
     driver: bridge
 
 volumes:
+  certbot-etc:
+  certbot-var:
+  webroot-data:
   redis_data:
   let-me-ask-db-data:
