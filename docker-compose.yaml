@@ -85,7 +85,7 @@ services:
       - certbot-var:/var/lib/letsencrypt
       - webroot-data:/var/www/certbot
     # O comando é executado UMA VEZ para obter os certificados iniciais
-    command: certonly --webroot -w /var/www/certbot --force-renewal --email talison737@gmail.com -d let-me-ask.faraujo.com -d api-let-me-ask.faraujo.com --rsa-key-size 4096 --agree-tos --no-eff-email --staging
+    command: certonly --webroot -w /var/www/certbot --force-renewal -v --email talison737@gmail.com -d let-me-ask.faraujo.com -d api-let-me-ask.faraujo.com --rsa-key-size 4096 --agree-tos --no-eff-email --staging
     networks:
       - let-me-ask-network
 
