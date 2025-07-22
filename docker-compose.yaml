@@ -35,7 +35,7 @@ services:
   let-me-ask-service:
     restart: always
     container_name: let-me-ask-service
-    image: talison737/nlw-agents-server:b2663e0
+    image: talison737/nlw-agents-server:a3897b5
     ports:
       - 3333:3333
     environment:
