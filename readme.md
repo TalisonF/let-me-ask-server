@@ -1,4 +1,3 @@
-Com certeza! Baseado no seu `docker-compose.yml`, criei um README.md completo, incluindo uma descrição do projeto, diagrama da arquitetura, guia de instalação e detalhes sobre cada serviço.
 
 ---
 
@@ -8,79 +7,13 @@ Bem-vindo ao repositório do **Let Me Ask**! Este projeto é uma plataforma de p
 
 ## ✨ Funcionalidades Principais
 
--   **Backend Robusto**: Uma API de serviço que gerencia a lógica de negócios.
--   **Frontend Interativo**: Uma aplicação web moderna para interação do usuário.
+-   **Backend**: Uma API de serviço que gerencia a lógica de negócios.
+-   **Frontend**: Uma aplicação web moderna para interação do usuário.
 -   **Inteligência Artificial**: Integração com a API do Google Gemini para respostas inteligentes.
 -   **Busca Semântica**: Utiliza PostgreSQL com a extensão `pgvector` para encontrar as perguntas mais relevantes.
 -   **Cache de Alta Performance**: Redis para caching de dados e melhoria de performance.
 -   **Segurança com HTTPS**: Configuração automática de certificados SSL/TLS com Nginx e Certbot.
 -   **Ambiente Isolado**: Todos os serviços rodam em uma rede Docker dedicada.
-
----
-
-## 🏗️ Diagrama da Arquitetura
-
-O diagrama abaixo ilustra como os serviços interagem entre si dentro do ambiente Docker.
-
-```mermaid
-graph TD
-    subgraph "Internet"
-        Usuario[<br>👤<br>Usuário]
-    end
-
-    subgraph "Ambiente Docker (let-me-ask-network)"
-        Nginx(
-            "<b>Nginx</b><br>Reverse Proxy<br>Portas 80, 443"
-        )
-
-        subgraph "Aplicações"
-            WebApp(
-                "<b>let-me-ask-webapp</b><br>Frontend<br>(Vite/React)"
-            )
-            ApiService(
-                "<b>let-me-ask-service</b><br>Backend API<br>(Node.js)"
-            )
-        end
-
-        subgraph "Bancos de Dados"
-            DB(
-                "<b>let-me-ask-db</b><br>PostgreSQL + pgvector<br>Porta 5432"
-            )
-            Redis(
-                "<b>let-me-ask-redis</b><br>Cache<br>Porta 6379"
-            )
-        end
-        
-        subgraph "Segurança (SSL/TLS)"
-            CertbotWeb(
-                "<b>certbot-web</b><br>Renovação de Certificado<br>(let-me-ask.dominio.com)"
-            )
-            CertbotApi(
-                "<b>certbot-api</b><br>Renovação de Certificado<br>(api-let-me-ask.dominio.com)"
-            )
-        end
-    end
-    
-    subgraph "Serviços Externos"
-        GeminiAI(
-            "<br>🤖<br>Google Gemini API"
-        )
-    end
-
-    Usuario -->|HTTPS na porta 443| Nginx
-    
-    Nginx -->|/| WebApp
-    Nginx -->|/api| ApiService
-    
-    WebApp -->|Requisições HTTP| ApiService
-    
-    ApiService -->|Consultas SQL e Vetoriais| DB
-    ApiService -->|Leitura/Escrita de Cache| Redis
-    ApiService -->|Requisições de IA| GeminiAI
-    
-    CertbotWeb -- "Verificação de Domínio" --> Nginx
-    CertbotApi -- "Verificação de Domínio" --> Nginx
-```
 
 ---
 
@@ -139,8 +72,8 @@ Siga os passos abaixo para colocar a aplicação no ar:
 
 1.  **Clone o repositório:**
     ```bash
-    git clone https://github.com/seu-usuario/seu-repositorio.git
-    cd seu-repositorio
+    git clone https://github.com/TalisonF/let-me-ask-server
+    cd let-me-ask-server
     ```
 
 2.  **Configure as variáveis de ambiente** e os domínios conforme a seção "Configuração" acima.
@@ -177,12 +110,3 @@ Siga os passos abaixo para colocar a aplicação no ar:
 | `certbot-web` / `certbot-api` | Serviços responsáveis pela **segurança HTTPS**. Eles gerenciam a obtenção e a renovação automática de certificados SSL da Let's Encrypt para os domínios do frontend e do backend, respectivamente. |
 
 ---
-
-## 📜 Licença
-
-Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
-
-## 👨‍💻 Contato
-
-Criado por **Talison Araujo** - sinta-se à vontade para entrar em contato!
-(Baseado no e-mail `talison737@gmail.com` e no usuário `talison737` encontrados no `docker-compose.yml`)
