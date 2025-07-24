@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+
+>>>>>>> c81cead9e7d5588f1ebfabf81fffa591efa0c3f1
 ---
 
 # 🚀 Let Me Ask - Plataforma de Q&A com IA
@@ -71,8 +75,8 @@ Siga os passos abaixo para colocar a aplicação no ar:
 
 1.  **Clone o repositório:**
     ```bash
-    git clone https://github.com/seu-usuario/seu-repositorio.git
-    cd seu-repositorio
+    git clone https://github.com/TalisonF/let-me-ask-server
+    cd let-me-ask-server
     ```
 
 2.  **Configure as variáveis de ambiente** e os domínios conforme a seção "Configuração" acima.
@@ -109,12 +113,3 @@ Siga os passos abaixo para colocar a aplicação no ar:
 | `certbot-web` / `certbot-api` | Serviços responsáveis pela **segurança HTTPS**. Eles gerenciam a obtenção e a renovação automática de certificados SSL da Let's Encrypt para os domínios do frontend e do backend, respectivamente. |
 
 ---
-
-## 📜 Licença
-
-Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
-
-## 👨‍💻 Contato
-
-Criado por **Talison Araujo** - sinta-se à vontade para entrar em contato!
-(Baseado no e-mail `talison737@gmail.com` e no usuário `talison737` encontrados no `docker-compose.yml`)
