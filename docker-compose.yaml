@@ -49,7 +49,7 @@ services:
 
   let-me-ask-webapp:
     container_name: let-me-ask-webapp
-    image: talison737/nlw-agents-webapp:a904c33
+    image: talison737/nlw-agents-webapp:bd98f3b
     environment:
       - VITE_API_BASE_URL=${VITE_API_BASE_URL}
     networks:
