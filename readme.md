@@ -1,9 +1,3 @@
-<<<<<<< HEAD
-=======
-
->>>>>>> c81cead9e7d5588f1ebfabf81fffa591efa0c3f1
----
-
 # 🚀 Let Me Ask - Plataforma de Q&A com IA
 
 Bem-vindo ao repositório do **Let Me Ask**! Este projeto é uma plataforma de perguntas e respostas (Q&A) moderna, totalmente containerizada com Docker e orquestrada com Docker Compose. A aplicação utiliza a API do Gemini para gerar respostas inteligentes e o pgvector para realizar buscas semânticas, oferecendo uma experiência de usuário rica e interativa.
